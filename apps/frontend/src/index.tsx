@@ -3,12 +3,15 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { StrictMode } from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./components/App";
 
-ReactDOM.render(
+render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>,
   document.getElementById("root")
 );
