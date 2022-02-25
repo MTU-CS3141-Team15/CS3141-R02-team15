@@ -16,6 +16,9 @@ export interface ListItemLinkProps
   primary: string;
 }
 
+/**
+ * A wrapper component allowing a {@link RouterLink} to function as a {@link ListItemButton}
+ */
 export default function ListItemLink({
   icon,
   primary,
