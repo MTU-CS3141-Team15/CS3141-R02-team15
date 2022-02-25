@@ -20,7 +20,14 @@ jobs:
         with:
           node-version: 16
           cache: "yarn"
-          cache-dependency-path: "**/package-lock.json"
+      - name: Node Modules Cache
+        id: nm-cache
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-nm-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nm-
       - name: Turborepo Cache
         uses: actions/cache@v2
         with:
