@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, Link as RouterLink, Link } from "react-router-dom";
 import { lightTheme } from "../themes/light";
 import MenuIcon from "@mui/icons-material/Menu";
 import { lazy, Suspense, useCallback, useState } from "react";
@@ -29,17 +29,6 @@ export default function App() {
     [drawerOpen]
   );
 
-  const navigate = useNavigate();
-  const routeLogin = () => {
-    const path = "/login/";
-    navigate(path);
-  };
-
-  const routeHome = () => {
-    const path = "/";
-    navigate(path);
-  };
-
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
@@ -55,15 +44,16 @@ export default function App() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-            onClick={routeHome}
-          >
-            Habit Helper
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Link
+              to="/"
+              color="inherit"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Habit Helper
+            </Link>
           </Typography>
-          <Button color="inherit" onClick={routeLogin}>
+          <Button color="inherit" component={RouterLink} to="/login">
             Login
           </Button>
         </Toolbar>
