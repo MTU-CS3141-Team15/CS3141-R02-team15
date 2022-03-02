@@ -12,13 +12,14 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { lightTheme } from "../themes/light";
 import MenuIcon from "@mui/icons-material/Menu";
 import { lazy, Suspense, useCallback, useState } from "react";
 import ListItemNavLink from "./ListItemNavLink";
 
 const Home = lazy(() => import("../pages/Home"));
+const Login = lazy(() => import("../pages/Login"));
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -27,6 +28,17 @@ export default function App() {
     () => setDrawerOpen(!drawerOpen),
     [drawerOpen]
   );
+
+  const navigate = useNavigate();
+  const routeLogin = () => {
+    const path = "/login/";
+    navigate(path);
+  };
+
+  const routeHome = () => {
+    const path = "/";
+    navigate(path);
+  };
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -43,10 +55,17 @@ export default function App() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+            onClick={routeHome}
+          >
             Habit Helper
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={routeLogin}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
@@ -72,6 +91,7 @@ export default function App() {
         }
       >
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </Suspense>
