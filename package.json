@@ -1,6 +1,6 @@
 {
-    "name": "turborepo-basic-shared",
-    "version": "0.0.0",
+    "name": "habit-helper",
+    "version": "0.1.0",
     "private": true,
     "workspaces": [
         "apps/*",
@@ -11,7 +11,9 @@
         "dev": "turbo run dev --parallel",
         "lint": "turbo run lint",
         "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "db:start": "docker compose up -d",
+        "db:stop": "docker compose stop"
     },
     "lint-staged": {
         "apps/**/*.{js,jsx,ts,tsx}": [
