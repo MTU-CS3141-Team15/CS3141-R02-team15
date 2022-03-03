@@ -21,6 +21,9 @@
         ],
         "**/*.{js,jsx,ts,tsx,md,json}": [
             "prettier --write"
+        ],
+        "**/*.prisma": [
+            "prisma format"
         ]
     },
     "devDependencies": {
