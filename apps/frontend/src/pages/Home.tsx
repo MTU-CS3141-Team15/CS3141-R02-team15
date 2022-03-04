@@ -10,6 +10,7 @@ import {
 export default function Home() {
   return (
     <Box
+      component="main"
       sx={{
         marginTop: 8,
         marginX: 8,

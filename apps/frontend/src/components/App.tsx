@@ -11,8 +11,9 @@ import {
   List,
   Toolbar,
   Typography,
+  Link,
 } from "@mui/material";
-import { Route, Routes, Link as RouterLink, Link } from "react-router-dom";
+import { Route, Routes, Link as RouterLink } from "react-router-dom";
 import { lightTheme } from "../themes/light";
 import MenuIcon from "@mui/icons-material/Menu";
 import { lazy, Suspense, useCallback, useState } from "react";
@@ -46,7 +47,7 @@ export default function App() {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link
-              to="/"
+              href="/"
               color="inherit"
               style={{ textDecoration: "none", color: "inherit" }}
             >
