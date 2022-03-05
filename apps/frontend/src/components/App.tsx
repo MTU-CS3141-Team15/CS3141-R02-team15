@@ -47,9 +47,10 @@ export default function App() {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link
-              href="/"
+              component={RouterLink}
+              to="/"
               color="inherit"
-              style={{ textDecoration: "none", color: "inherit" }}
+              underline="none"
             >
               Habit Helper
             </Link>
