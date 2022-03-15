@@ -11,7 +11,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ["*.ts", "*.tsx"],
+      files: ["**/src/*.ts", "**/src/*.tsx"],
       extends: [
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ],
