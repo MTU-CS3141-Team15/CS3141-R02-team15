@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  password  String
+  email     String   @unique
+  lastLogin DateTime @default(now())
+  habits    Habit[]
+}
+
+model Habit {
+  id          Int       @id @default(autoincrement())
+  name        String
+  dateCreated DateTime  @default(now())
+  endDate     DateTime
+  frequency   String
+  creator     User      @relation(fields: [creatorId], references: [id])
+  creatorId   Int
+  checkIns    CheckIn[]
+}
+
+model CheckIn {
+  id      Int      @id @default(autoincrement())
+  date    DateTime @default(now())
+  taskMet Boolean
+  habitId Int
+  habit   Habit    @relation(fields: [habitId], references: [id])
+}

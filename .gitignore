@@ -264,3 +264,6 @@ $RECYCLE.BIN/
 # builds
 dist/
 build/
+
+# docker-compose db password
+db_password.txt
