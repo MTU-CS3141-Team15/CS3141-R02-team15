@@ -11,8 +11,4 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-void app.get("/", (req, res) => {
-  res.send({ status: "success" });
-});
-
 export default app;

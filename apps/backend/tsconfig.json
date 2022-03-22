@@ -3,10 +3,8 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "commonjs",
-        "rootDir": "./src",
-        "sourceMap": true,
-        "outDir": "./dist"
+        "sourceMap": true
     },
-    "include": ["src"],
+    "include": ["src", "test"],
     "exclude": ["node_modules"]
 }

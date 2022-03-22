@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "dev": "nodemon src/index.ts",
-        "build": "tsc",
+        "build": "tsc -p ./tsconfig-build.json",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
         "test": "jest"
     },
@@ -28,6 +28,7 @@
         "config": "*",
         "eslint": "^8.10.0",
         "jest": "^27.5.1",
+        "jest-mock-extended": "^2.0.4",
         "nodemon": "^2.0.15",
         "prisma": "^3.11.0",
         "supertest": "^6.2.2",
