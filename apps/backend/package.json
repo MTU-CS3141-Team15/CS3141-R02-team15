@@ -7,7 +7,7 @@
         "dev": "nodemon src/index.ts",
         "build": "tsc -p ./tsconfig-build.json",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-        "test": "jest"
+        "test": "jest --passWithNoTests"
     },
     "dependencies": {
         "@prisma/client": "^3.11.0",
