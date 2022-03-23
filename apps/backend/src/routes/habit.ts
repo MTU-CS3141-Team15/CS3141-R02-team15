@@ -1,11 +1,11 @@
-import express from "express";
+import { Router } from "express";
 import prisma from "../db";
 
-const habitRouter = express.Router();
+const router = Router();
 
 // Create a new habit
-habitRouter.post("/create", async (req, res) => {
-  const { user_id, name, frequency } = req.body; // Will set the var user_id to the user_id value in the JSON... I think?
+router.post("/", async (req, res) => {
+  const { user_id, name, frequency } = req.body; // TODO: Will need to change user_id to come from req.user
   const newHabit = await prisma.habit.create({
     data: {
       name: name,
@@ -16,4 +16,14 @@ habitRouter.post("/create", async (req, res) => {
   });
 });
 
-export default habitRouter;
+// View Habit
+router.get("/", async (req, res) => {
+  const { user_id } = req.body; // TODO: Will need to change user_id to come from req.user
+  const habit = await prisma.habit.findMany({
+    where: {
+      creatorId: user_id,
+    },
+  });
+});
+
+export default router;
