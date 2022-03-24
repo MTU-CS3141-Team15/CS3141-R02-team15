@@ -1,5 +1,6 @@
 import { Router } from "express";
 import prisma from "../db";
+import { formatHabits } from "../util/dateFormating";
 
 const router = Router();
 
@@ -16,14 +17,17 @@ router.post("/", async (req, res) => {
   });
 });
 
-// View Habit
-router.get("/", async (req, res) => {
-  const { user_id } = req.body; // TODO: Will need to change user_id to come from req.user
-  const habit = await prisma.habit.findMany({
+// View a habit by id
+router.get("/:id", async (req, res) => {
+  //const { user_id } = req.body; // TODO: Will need to change user_id to come from req.user
+  const id = parseInt(req.params.id);
+  const habits = await prisma.habit.findMany({
     where: {
-      creatorId: user_id,
+      id: id,
     },
   });
+
+  res.send(formatHabits(habits));
 });
 
 export default router;
