@@ -1,6 +1,6 @@
 import { Router } from "express";
 import prisma from "../db";
-import { formatHabits } from "../util/dateFormating";
+import { formatHabits, formatHabit } from "../util/dateFormating";
 
 const router = Router();
 
@@ -12,9 +12,11 @@ router.post("/", async (req, res) => {
       name: name,
       frequency: frequency,
       creatorId: user_id,
-      endDate: "TODO",
+      endDate: new Date(Date.now()), // TODO: Figure out how to set this to an offset
     },
   });
+
+  res.send(formatHabit(newHabit));
 });
 
 // View a habit by id
@@ -26,7 +28,6 @@ router.get("/:id", async (req, res) => {
       id: id,
     },
   });
-
   res.send(formatHabits(habits));
 });
 
