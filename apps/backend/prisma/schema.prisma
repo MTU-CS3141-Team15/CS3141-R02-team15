@@ -25,7 +25,7 @@ model Habit {
   name        String
   dateCreated DateTime  @default(now())
   endDate     DateTime
-  frequency   String
+  frequency   Int
   creator     User      @relation(fields: [creatorId], references: [id])
   creatorId   Int
   checkIns    CheckIn[]
