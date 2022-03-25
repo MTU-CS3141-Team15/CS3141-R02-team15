@@ -1,8 +1,8 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import * as argon2 from "argon2";
 
 import prisma from "../../db";
+import { verifyHash } from "../hash";
 
 passport.use(
   new LocalStrategy(
@@ -17,9 +17,7 @@ passport.use(
           },
         });
 
-        console.log(user);
-
-        if (user && (await argon2.verify(user.password, password))) {
+        if (user && (await verifyHash(user.password, password))) {
           return done(null, user);
         } else {
           return done("Incorrect email or password");

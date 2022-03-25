@@ -10,6 +10,7 @@ import asyncHandler from "../util/asyncHandler";
 import passport from "passport";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { refreshAccessToken } from "../auth/middleware";
+import { createHash } from "../auth/hash";
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.post<unknown, unknown, RegisterReqBody>(
     const { email, password, firstName, lastName } = req.body;
 
     try {
-      const hash = await argon2.hash(password, { type: argon2.argon2id });
+      const hash = await createHash(password);
       await prisma.user.create({
         data: {
           email: email,
@@ -34,7 +35,6 @@ router.post<unknown, unknown, RegisterReqBody>(
         },
       });
     } catch (error) {
-      console.log(error);
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code == "P2002") {
           res.status(400).send({ error: "Email is alreay in use" });
