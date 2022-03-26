@@ -9,5 +9,5 @@ import habitRouter from "./habit";
  */
 export function registerRoutes(app: Application): void {
   app.use("/user", authRouter);
-  app.use("/habits", habitRouter)
+  app.use("/habits", habitRouter);
 }

@@ -1,34 +1,50 @@
 import { Router } from "express";
+import requireAuth from "../auth/middleware";
 import prisma from "../db";
+import asyncHandler from "../util/asyncHandler";
 import { formatHabits, formatHabit } from "../util/dateFormating";
 
 const router = Router();
 
-// Create a new habit
-router.post("/", async (req, res) => {
-  const creatorId = req.body.creatorId;
-  const { name, endDate } = req.body; // TODO: Will need to change user_id to come from req.user
+router.use(requireAuth());
 
-  const newHabit = await prisma.habit.create({
-    data: {
-      name: name,
-      frequency: 0,
-      endDate: endDate,
-      creatorId: creatorId,
-    },
-  });
-  res.send(formatHabit(newHabit));
-});
+// Create a new habit
+router.post(
+  "/",
+  asyncHandler(async (req, res) => {
+    const creatorId = req.user.id;
+    const { name, endDate } = req.body as any;
+
+    const newHabit = await prisma.habit.create({
+      data: {
+        name: name,
+        frequency: 0,
+        endDate: endDate,
+        creatorId: creatorId,
+      },
+    });
+    res.send(newHabit);
+  })
+);
 
 // View a habit by id
-router.get("/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const habits = await prisma.habit.findMany({
-    where: {
-      id: id,
-    },
-  });
-  res.send(formatHabits(habits));
-});
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+    const creatorId = req.user.id;
+    const habit = await prisma.habit.findUnique({
+      where: {
+        id: habitId,
+      },
+    });
+
+    if (habit) {
+      res.send(habit);
+    } else {
+      res.status(400).send();
+    }
+  })
+);
 
 export default router;

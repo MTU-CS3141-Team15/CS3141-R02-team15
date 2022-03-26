@@ -1,53 +1,69 @@
-import request from "supertest";
+import { agent, SuperAgentTest } from "supertest";
 import prismaMock from "./prisma-mock";
 import app from "../src/app";
+import { createHash } from "../src/auth/hash";
+
+const user = {
+  id: 1,
+  firstName: "John",
+  lastName: "Doe",
+  email: "foo@example.com",
+  password: "foo",
+  lastLogin: new Date(),
+};
+
+const habit = {
+  id: 1,
+  name: "jog",
+  dateCreated: new Date(Date.now()),
+  endDate: new Date(Date.now()),
+  frequency: 4,
+  creator: user,
+  creatorId: 1,
+};
+
+let request: SuperAgentTest;
+
+beforeEach(async () => {
+  request = agent(app);
+
+  prismaMock.user.findUnique.mockResolvedValue({
+    ...user,
+    password: await createHash(user.password),
+  });
+
+  const res = await request.post("/user/login").send({
+    email: user.email,
+    password: user.password,
+  });
+
+  expect(res.status).toEqual(200);
+
+  request.set("Cookie", res.headers["set-cookie"]);
+});
 
 describe("/habits", () => {
-  const habit = {
-    id: 1,
-    name: "jog",
-    dateCreated: new Date(Date.now()),
-    endDate: new Date(Date.now()),
-    frequency: "4",
-    creator: "Bob",
-    creatorId: 12345,
-  };
-
-  // Format habit correctly
-  const habitRes = {
-    ...habit,
-    dateCreated: habit.dateCreated.getTime(),
-    endDate: habit.endDate.getTime(),
-  };
-
   describe("GET", () => {
-    test("View a single habit", () => {
-      prismaMock.habit.findMany.mockResolvedValue([habit]);
-      console.log(prismaMock.habit.findMany.mock);
-      return request(app)
-        .get("/habits/1")
-        .then((response) => {
-          expect(response.statusCode).toBe(200);
-          expect(response.body).toStrictEqual([habitRes]);
-        });
+    test("View a single habit", async () => {
+      prismaMock.habit.findUnique.mockResolvedValue(habit);
+
+      const res = await request.get("/habits/1");
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toStrictEqual(JSON.parse(JSON.stringify(habit)));
     });
   });
 
   describe("POST", () => {
-    test("Create a single habit", () => {
+    test("Create a single habit", async () => {
       prismaMock.habit.create.mockResolvedValue(habit);
-      return request(app)
-        .post("/habits/")
-        .send({
-          id: habit.id,
-          name: habit.name,
-          dateCreated: habit.dateCreated,
-          endDate: habit.endDate,
-          frequency: habit.frequency,
-          creater: habit.creator,
-          creatorId: habit.creatorId,
-        })
-        .expect(200);
+
+      const res = await request.post("/habits/").send({
+        name: habit.name,
+        endDate: habit.endDate,
+      });
+
+      expect(res.status).toEqual(200);
     });
   });
 });
