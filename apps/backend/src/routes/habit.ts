@@ -2,7 +2,6 @@ import { Router } from "express";
 import requireAuth from "../auth/middleware";
 import prisma from "../db";
 import asyncHandler from "../util/asyncHandler";
-import { formatHabits, formatHabit } from "../util/dateFormating";
 
 const router = Router();
 
