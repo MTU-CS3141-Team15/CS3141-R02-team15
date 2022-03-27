@@ -52,6 +52,15 @@ describe("/habits", () => {
       expect(res.statusCode).toBe(200);
       expect(res.body).toStrictEqual(JSON.parse(JSON.stringify(habit)));
     });
+
+    test("View all habit", async () => {
+      prismaMock.habit.findMany.mockResolvedValue([habit]);
+
+      const res = await request.get("/habits/");
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toStrictEqual(JSON.parse(JSON.stringify([habit])));
+    });
   });
 
   describe("POST", () => {

@@ -46,4 +46,23 @@ router.get(
   })
 );
 
+// View all habit
+router.get(
+  "/",
+  asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const habit = await prisma.habit.findMany({
+      where: {
+        creatorId: userId,
+      },
+    });
+
+    if (habit) {
+      res.send(habit);
+    } else {
+      res.status(400).send();
+    }
+  })
+);
+
 export default router;
