@@ -12,7 +12,7 @@ router.post(
   "/",
   asyncHandler(async (req, res) => {
     const creatorId = req.user.id;
-    const { name, endDate } = req.body as any;
+    const { name, endDate } = req.body as { name: string; endDate: string };
 
     const newHabit = await prisma.habit.create({
       data: {
@@ -31,7 +31,6 @@ router.get(
   "/:id",
   asyncHandler(async (req, res) => {
     const habitId = parseInt(req.params.id);
-    const creatorId = req.user.id;
     const habit = await prisma.habit.findUnique({
       where: {
         id: habitId,
