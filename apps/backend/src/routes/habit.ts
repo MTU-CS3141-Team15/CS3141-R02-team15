@@ -18,7 +18,7 @@ router.post(
       data: {
         name: name,
         frequency: 0,
-        endDate: endDate,
+        endDate: new Date(endDate),
         creatorId: creatorId,
       },
     });
