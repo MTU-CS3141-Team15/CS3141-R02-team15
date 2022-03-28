@@ -1,7 +1,6 @@
 import type { User } from "@prisma/client";
 
 import { Router } from "express";
-import * as argon2 from "argon2";
 
 import "../auth/strategies/local";
 import "../auth/strategies/jwt";
