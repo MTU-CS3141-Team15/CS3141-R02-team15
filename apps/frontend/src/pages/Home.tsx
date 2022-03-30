@@ -1,20 +1,15 @@
 import {
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   DialogContentText,
   TextField,
-  CardActionArea,
-  CardMedia,
 } from "@mui/material";
 import * as React from "react";
+import { CreateHabitCard, HabitCard } from "../components/habitCard";
 
 export default function Home() {
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -58,104 +53,47 @@ export default function Home() {
         flexWrap: "wrap",
       }}
     >
-      <Card
-        sx={{ maxWidth: 275, margin: 2, maxHeight: 130 }}
-        onClick={handleClickOpenCreate}
-      >
-        <CardActionArea>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              New Habit
-            </Typography>
-          </CardContent>
-          <CardMedia
-            component="img"
-            height="65"
-            image="https://lh3.googleusercontent.com/WyK_38n4GGPtqitT0IP7dVq8n9edWFdL__DAJfaxMNEmqtdyJv9WKfAEjuArMO8lt6WOyzwRYCO-xKId8CBW6qr4O3JdczTIo4v3FOH7c-q_VZXDbGM=w1064-v0"
-            alt="create-habit"
-          />
-        </CardActionArea>
-      </Card>
+      <CreateHabitCard handleClick={handleClickOpenCreate} />
 
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 1
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
+      <HabitCard
+        name="Habit 1"
+        description="Description of habit"
+        handleUpdate={undefined}
+        handleProgress={undefined}
+        handleDelete={handleClickOpenDelete}
+      />
 
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 2
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
+      <HabitCard
+        name="Habit 2"
+        description="Description of habit"
+        handleUpdate={undefined}
+        handleProgress={undefined}
+        handleDelete={handleClickOpenDelete}
+      />
 
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 3
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
+      <HabitCard
+        name="Habit 3"
+        description="Description of habit"
+        handleUpdate={undefined}
+        handleProgress={undefined}
+        handleDelete={handleClickOpenDelete}
+      />
 
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 4
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
+      <HabitCard
+        name="Habit 4"
+        description="Description of habit"
+        handleUpdate={undefined}
+        handleProgress={undefined}
+        handleDelete={handleClickOpenDelete}
+      />
 
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 5
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
+      <HabitCard
+        name="Habit 5"
+        description="Description of habit"
+        handleUpdate={undefined}
+        handleProgress={undefined}
+        handleDelete={handleClickOpenDelete}
+      />
 
       <Dialog
         open={openDelete}
