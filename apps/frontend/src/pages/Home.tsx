@@ -7,13 +7,16 @@ import {
   DialogActions,
   DialogContentText,
   TextField,
+  Stack,
+  Fab,
 } from "@mui/material";
-import * as React from "react";
-import { CreateHabitCard, HabitCard } from "../components/habitCard";
+import AddIcon from "@mui/icons-material/Add";
+import HabitCard from "../components/HabitCard";
+import { useState } from "react";
 
 export default function Home() {
-  const [openDelete, setOpenDelete] = React.useState(false);
-  const [openCreate, setOpenCreate] = React.useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
 
   const handleClickOpenDelete = () => {
     setOpenDelete(true);
@@ -42,59 +45,61 @@ export default function Home() {
   };
 
   return (
-    <Box
-      component="main"
-      sx={{
-        marginTop: 8,
-        marginX: 8,
-        display: "flex",
-        flexDirection: "grid",
-        alignItems: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      <CreateHabitCard handleClick={handleClickOpenCreate} />
+    <main>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 2, sm: 2, md: 4 }}
+        sx={{ margin: 5, verticalAlign: "baseline" }}
+      >
+        <HabitCard
+          name="Habit 1"
+          description="Description of habit"
+          onUpdate={undefined}
+          onProgress={undefined}
+          onDelete={handleClickOpenDelete}
+        />
 
-      <HabitCard
-        name="Habit 1"
-        description="Description of habit"
-        handleUpdate={undefined}
-        handleProgress={undefined}
-        handleDelete={handleClickOpenDelete}
-      />
+        <HabitCard
+          name="Habit 2"
+          description="Description of habit"
+          onUpdate={undefined}
+          onProgress={undefined}
+          onDelete={handleClickOpenDelete}
+        />
 
-      <HabitCard
-        name="Habit 2"
-        description="Description of habit"
-        handleUpdate={undefined}
-        handleProgress={undefined}
-        handleDelete={handleClickOpenDelete}
-      />
+        <HabitCard
+          name="Habit 3"
+          description="Description of habit"
+          onUpdate={undefined}
+          onProgress={undefined}
+          onDelete={handleClickOpenDelete}
+        />
 
-      <HabitCard
-        name="Habit 3"
-        description="Description of habit"
-        handleUpdate={undefined}
-        handleProgress={undefined}
-        handleDelete={handleClickOpenDelete}
-      />
+        <HabitCard
+          name="Habit 4"
+          description="Description of habit"
+          onUpdate={undefined}
+          onProgress={undefined}
+          onDelete={handleClickOpenDelete}
+        />
 
-      <HabitCard
-        name="Habit 4"
-        description="Description of habit"
-        handleUpdate={undefined}
-        handleProgress={undefined}
-        handleDelete={handleClickOpenDelete}
-      />
-
-      <HabitCard
-        name="Habit 5"
-        description="Description of habit"
-        handleUpdate={undefined}
-        handleProgress={undefined}
-        handleDelete={handleClickOpenDelete}
-      />
-
+        <HabitCard
+          name="Habit 5"
+          description="Description of habit"
+          onUpdate={undefined}
+          onProgress={undefined}
+          onDelete={handleClickOpenDelete}
+        />
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            display: { sm: "flex", xs: "none" },
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      </Stack>
       <Dialog
         open={openDelete}
         onClose={handleCloseDelete}
@@ -150,6 +155,18 @@ export default function Home() {
           </DialogActions>
         </Box>
       </Dialog>
-    </Box>
+      <Fab
+        color="primary"
+        aria-label="add"
+        sx={{
+          display: { sm: "none", xs: "flex" },
+          position: "absolute",
+          bottom: 16,
+          right: 16,
+        }}
+      >
+        <AddIcon />
+      </Fab>
+    </main>
   );
 }
