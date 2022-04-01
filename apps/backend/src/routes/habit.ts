@@ -26,6 +26,26 @@ router.post(
   })
 );
 
+// Update a habit
+router.post(
+  "/update",
+  asyncHandler(async (req, res) => {
+    const { taskMet, habitId } = req.body as {
+      taskMet: boolean;
+      habitId: number;
+    };
+
+    const updateCheckIn = await prisma.checkIn.create({
+      data: {
+        taskMet: taskMet,
+        habitId: habitId,
+      },
+    });
+
+    res.send(updateCheckIn);
+  })
+);
+
 // View a habit by id
 router.get(
   "/:id",
