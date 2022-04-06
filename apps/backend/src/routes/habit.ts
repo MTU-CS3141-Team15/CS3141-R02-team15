@@ -35,6 +35,8 @@ router.post(
       habitId: number;
     };
 
+    // TODO: Add check to see if the habit id is in the users habits
+
     const updateCheckIn = await prisma.checkIn.create({
       data: {
         taskMet: taskMet,

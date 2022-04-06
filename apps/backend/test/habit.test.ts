@@ -22,6 +22,13 @@ const habit = {
   creatorId: 1,
 };
 
+const checkIn = {
+  id: 1,
+  date: new Date(Date.now()),
+  taskMet: true,
+  habitId: 1,
+};
+
 let request: SuperAgentTest;
 
 beforeEach(async () => {
@@ -70,6 +77,21 @@ describe("/habits", () => {
       const res = await request.post("/habits/").send({
         name: habit.name,
         endDate: habit.endDate,
+      });
+
+      expect(res.status).toEqual(200);
+    });
+  });
+});
+
+describe("/habits/update", () => {
+  describe("POST", () => {
+    test("Update a habits progress", async () => {
+      prismaMock.checkIn.create.mockResolvedValue(checkIn);
+
+      const res = await request.post("/habits/").send({
+        taskMet: checkIn.taskMet,
+        endDate: checkIn.habitId,
       });
 
       expect(res.status).toEqual(200);
