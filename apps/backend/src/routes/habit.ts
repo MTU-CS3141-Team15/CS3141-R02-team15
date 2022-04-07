@@ -35,7 +35,24 @@ router.post(
       habitId: number;
     };
 
-    // TODO: Add check to see if the habit id is in the users habits
+    const userId = req.user.id;
+
+    // Check if the user is updating a habit associated with their account only
+    const habit = await prisma.habit.findUnique({
+      where: {
+        id: habitId,
+      },
+    });
+
+    if (habit?.creatorId == null) {
+      res.send("Habit ID not found");
+      return;
+    }
+
+    if (habit?.creatorId != userId) {
+      res.send("Habit not associated with this account!");
+      return;
+    }
 
     const updateCheckIn = await prisma.checkIn.create({
       data: {
