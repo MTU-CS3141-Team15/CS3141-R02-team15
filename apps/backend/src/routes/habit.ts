@@ -44,13 +44,8 @@ router.post(
       },
     });
 
-    if (habit?.creatorId == null) {
-      res.send("Habit ID not found");
-      return;
-    }
-
-    if (habit?.creatorId != userId) {
-      res.send("Habit not associated with this account!");
+    if (habit?.creatorId == null || habit?.creatorId != userId) {
+      res.status(400).send();
       return;
     }
 
