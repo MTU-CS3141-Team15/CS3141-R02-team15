@@ -1,169 +1,116 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  TextField,
-  Stack,
-  Fab,
-} from "@mui/material";
+import { Stack, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import HabitCard from "../components/HabitCard";
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useHabits, { Habit } from "../util/hooks/useHabits";
+import CreateHabitDialog, { HabitForm } from "../components/CreateHabitDialog";
+import APIRequest from "../util/request";
+import DeleteHabitDialog from "../components/DeleteHabitDialog";
 
 export default function Home() {
   const [openDelete, setOpenDelete] = useState(false);
+  const [habitToDelete, setHabitToDelete] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);
+  const [habits, addHabits, deleteHabits] = useHabits([]);
 
-  const handleClickOpenDelete = () => {
-    setOpenDelete(true);
-  };
-
-  const handleCloseDelete = () => {
+  const handleDeleteClose = useCallback(() => {
+    setHabitToDelete(undefined);
     setOpenDelete(false);
-  };
+  }, []);
 
-  const handleClickOpenCreate = () => {
+  const handleDeleteConfirm = useCallback(() => {
+    if (habitToDelete) {
+      deleteHabits(habitToDelete);
+      setHabitToDelete(undefined);
+    }
+    setOpenDelete(false);
+  }, [deleteHabits, habitToDelete]);
+
+  const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
-  };
+  }, []);
 
-  const handleCloseCreate = () => {
+  const handleCreateClose = useCallback(() => {
     setOpenCreate(false);
-  };
+  }, []);
 
-  // TODO: Don't console log information in production!!!
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      habitName: data.get("habit-name"),
-      habitDesc: data.get("habit-description"),
-    });
-  };
+  const handleCreateSubmit = useCallback(
+    (habit: HabitForm) => {
+      APIRequest.post("/habits", habit)
+        .then((res) => res.json())
+        .then((body) => addHabits(body))
+        .then(() => setOpenCreate(false));
+    },
+    [addHabits]
+  );
+
+  useEffect(() => {
+    APIRequest.get("/habits")
+      .then((res) => res.json())
+      .then((body) => addHabits(...body));
+  }, [addHabits]);
+
+  const habitCards = useMemo(
+    () =>
+      habits.map((habit) => {
+        const handleDelete = () => {
+          setHabitToDelete(habit);
+          setOpenDelete(true);
+        };
+        return (
+          <HabitCard
+            key={habit.id}
+            name={habit.name}
+            description={habit.description}
+            onUpdate={undefined}
+            onProgress={undefined}
+            onDelete={handleDelete}
+          />
+        );
+      }),
+    [habits]
+  );
 
   return (
     <main>
       <Stack
         direction={{ xs: "column", sm: "row" }}
         spacing={{ xs: 2, sm: 2, md: 4 }}
-        sx={{ margin: 5, verticalAlign: "baseline" }}
+        sx={{ margin: 5 }}
+        alignItems="center"
       >
-        <HabitCard
-          name="Habit 1"
-          description="Description of habit"
-          onUpdate={undefined}
-          onProgress={undefined}
-          onDelete={handleClickOpenDelete}
-        />
-
-        <HabitCard
-          name="Habit 2"
-          description="Description of habit"
-          onUpdate={undefined}
-          onProgress={undefined}
-          onDelete={handleClickOpenDelete}
-        />
-
-        <HabitCard
-          name="Habit 3"
-          description="Description of habit"
-          onUpdate={undefined}
-          onProgress={undefined}
-          onDelete={handleClickOpenDelete}
-        />
-
-        <HabitCard
-          name="Habit 4"
-          description="Description of habit"
-          onUpdate={undefined}
-          onProgress={undefined}
-          onDelete={handleClickOpenDelete}
-        />
-
-        <HabitCard
-          name="Habit 5"
-          description="Description of habit"
-          onUpdate={undefined}
-          onProgress={undefined}
-          onDelete={handleClickOpenDelete}
-        />
+        {habitCards}
         <Fab
           color="primary"
           aria-label="add"
           sx={{
             display: { sm: "flex", xs: "none" },
           }}
+          onClick={handleCreateOpen}
         >
           <AddIcon />
         </Fab>
       </Stack>
-      <Dialog
+      <DeleteHabitDialog
         open={openDelete}
-        onClose={handleCloseDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this habit?"}
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleCloseDelete}>Keep</Button>
-          <Button color="error" onClick={handleCloseDelete} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={openCreate} onClose={handleCloseCreate}>
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <DialogTitle>Create a new habit</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Enter a name and description for the habit:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="habit-name"
-              name="habit-name"
-              label="Habit Name"
-              type="name"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              margin="dense"
-              id="habit-description"
-              name="habit-description"
-              label="Habit Description"
-              type="description"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseCreate} color="error">
-              Cancel
-            </Button>
-            <Button onClick={handleCloseCreate} type="submit">
-              Create
-            </Button>
-          </DialogActions>
-        </Box>
-      </Dialog>
+        onClose={handleDeleteClose}
+        onConfirm={handleDeleteConfirm}
+      />
+      <CreateHabitDialog
+        open={openCreate}
+        onClose={handleCreateClose}
+        onSubmit={handleCreateSubmit}
+      />
       <Fab
         color="primary"
         aria-label="add"
         sx={{
           display: { sm: "none", xs: "flex" },
-          position: "absolute",
+          position: "fixed",
           bottom: 16,
           right: 16,
         }}
+        onClick={handleCreateOpen}
       >
         <AddIcon />
       </Fab>
