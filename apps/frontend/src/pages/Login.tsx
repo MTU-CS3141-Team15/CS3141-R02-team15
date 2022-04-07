@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useCallback, useState } from "react";
 import { useUserContext } from "../components/UserProvider";
 import APIRequest from "../util/request";
+import { useNavigate } from "react-router-dom";
 
 type LoginForm = {
   email: string;
@@ -19,6 +20,7 @@ type LoginForm = {
 };
 
 export default function Login() {
+  const navigate = useNavigate();
   const { setUser } = useUserContext();
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
@@ -30,17 +32,18 @@ export default function Login() {
       event.preventDefault();
       APIRequest.post("/user/login", formData)
         .then((res) => res.json())
-        .then((body) =>
+        .then((body) => {
           setUser({
             id: body["id"],
             email: body["email"],
             firstName: body["firstName"],
             lastName: body["lastName"],
-          })
-        )
+          });
+          navigate("/");
+        })
         .catch((err) => console.log(err));
     },
-    [formData, setUser]
+    [formData, navigate, setUser]
   );
 
   const handleInputChange = useCallback(
