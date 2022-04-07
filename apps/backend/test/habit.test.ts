@@ -87,9 +87,10 @@ describe("/habits", () => {
 describe("/habits/update", () => {
   describe("POST", () => {
     test("Update a habits progress", async () => {
+      prismaMock.habit.findUnique.mockResolvedValue(habit);
       prismaMock.checkIn.create.mockResolvedValue(checkIn);
 
-      const res = await request.post("/habits/").send({
+      const res = await request.post("/habits/1/progress").send({
         taskMet: checkIn.taskMet,
         endDate: checkIn.habitId,
       });

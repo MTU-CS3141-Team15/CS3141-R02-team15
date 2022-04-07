@@ -28,13 +28,10 @@ router.post(
 
 // Update a habit
 router.post(
-  "/update",
+  "/:id/progress",
   asyncHandler(async (req, res) => {
-    const { taskMet, habitId } = req.body as {
-      taskMet: boolean;
-      habitId: number;
-    };
-
+    const { taskMet } = req.body as { taskMet: boolean };
+    const habitId = parseInt(req.params.id);
     const userId = req.user.id;
 
     // Check if the user is updating a habit associated with their account only
@@ -45,6 +42,7 @@ router.post(
     });
 
     if (habit?.creatorId == null || habit?.creatorId != userId) {
+      console.log(habit?.creatorId);
       res.status(400).send();
       return;
     }
