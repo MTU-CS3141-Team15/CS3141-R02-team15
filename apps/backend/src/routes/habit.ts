@@ -68,6 +68,8 @@ router.get(
       },
     });
 
+    console.log("DEEc");
+
     if (habit) {
       res.send(habit);
     } else {
@@ -92,6 +94,24 @@ router.get(
     } else {
       res.status(400).send();
     }
+  })
+);
+
+router.get(
+  "/:id/progress",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+
+    const checkIns = await prisma.checkIn.findMany({
+      where: {
+        habitId: habitId,
+        habit: {
+          creatorId: req.user.id,
+        },
+      },
+    });
+
+    res.send(checkIns);
   })
 );
 
