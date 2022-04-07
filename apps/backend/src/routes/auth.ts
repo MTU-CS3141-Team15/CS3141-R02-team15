@@ -8,7 +8,7 @@ import prisma from "../db";
 import asyncHandler from "../util/asyncHandler";
 import passport from "passport";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { refreshAccessToken } from "../auth/middleware";
+import requireAuth, { refreshAccessToken } from "../auth/middleware";
 import { createHash } from "../auth/hash";
 
 const router = Router();
@@ -55,6 +55,30 @@ router.post(
   (req, res) => {
     res.send();
   }
+);
+
+router.get(
+  "/",
+  requireAuth(),
+  asyncHandler(async (req, res) => {
+    const userInfo = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    if (userInfo) {
+      const { firstName, lastName, email, id } = userInfo;
+      res.send({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        id: id,
+      });
+    } else {
+      res.send(400);
+    }
+  })
 );
 
 export default router;
