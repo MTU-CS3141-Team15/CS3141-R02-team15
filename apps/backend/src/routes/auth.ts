@@ -53,7 +53,13 @@ router.post(
   passport.authenticate("local", { session: false }),
   refreshAccessToken,
   (req, res) => {
-    res.send();
+    const { id, email, firstName, lastName } = req.user;
+    res.send({
+      id: id,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+    });
   }
 );
 
