@@ -9,17 +9,48 @@ import {
   TextField,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useCallback, useState } from "react";
+import { useUserContext } from "../components/UserProvider";
+import APIRequest from "../util/request";
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
 
 export default function Login() {
-  // TODO: Don't console log passwords in production!!!
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const { setUser } = useUserContext();
+  const [formData, setFormData] = useState<LoginForm>({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      APIRequest.post("/user/login", formData)
+        .then((res) => res.json())
+        .then((body) =>
+          setUser({
+            id: body["id"],
+            email: body["email"],
+            firstName: body["firstName"],
+            lastName: body["lastName"],
+          })
+        )
+        .catch((err) => console.log(err));
+    },
+    [formData, setUser]
+  );
+
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+      setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+      }),
+    [formData]
+  );
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,6 +78,8 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={formData.email}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
@@ -57,6 +90,8 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={formData.password}
+            onChange={handleInputChange}
           />
           <Button
             type="submit"
