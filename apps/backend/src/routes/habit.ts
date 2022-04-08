@@ -26,6 +26,37 @@ router.post(
   })
 );
 
+router.post(
+  "/:id/progress",
+  asyncHandler(async (req, res) => {
+    const { taskMet } = req.body as { taskMet: boolean };
+    const habitId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    // Check if the user is updating a habit associated with their account only
+    const habit = await prisma.habit.findFirst({
+      where: {
+        id: habitId,
+        creatorId: userId,
+      },
+    });
+
+    if (!habit) {
+      res.status(400).send();
+      return;
+    }
+
+    const updateCheckIn = await prisma.checkIn.create({
+      data: {
+        taskMet: taskMet,
+        habitId: habitId,
+      },
+    });
+
+    res.send(updateCheckIn);
+  })
+);
+
 // View a habit by id
 router.get(
   "/:id",
