@@ -57,7 +57,6 @@ export default function Register() {
             label="Last Name"
             name="lastName"
             autoComplete="lastName"
-            autoFocus
           />
           <TextField
             margin="normal"
@@ -67,7 +66,6 @@ export default function Register() {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
           />
           <TextField
             margin="normal"
@@ -98,13 +96,8 @@ export default function Register() {
             Register
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/login" variant="body2">
                 {"Already have an account? Login"}
               </Link>
             </Grid>
