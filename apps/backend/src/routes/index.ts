@@ -1,6 +1,7 @@
 import type { Application } from "express";
 import authRouter from "./auth";
 import habitRouter from "./habit";
+import userRouter from "./user";
 
 /**
  * Sets up routes on the given express app
@@ -9,5 +10,6 @@ import habitRouter from "./habit";
  */
 export function registerRoutes(app: Application): void {
   app.use("/user", authRouter);
+  app.use("/user", userRouter);
   app.use("/habits", habitRouter);
 }
