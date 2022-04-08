@@ -16,17 +16,18 @@ router.get(
       },
     });
 
-    if (userInfo) {
-      const { firstName, lastName, email, id } = userInfo;
-      res.send({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        id: id,
-      });
-    } else {
+    if (!userInfo) {
       res.send(400);
+      return;
     }
+
+    const { firstName, lastName, email, id } = userInfo;
+    res.send({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      id: id,
+    });
   })
 );
 
