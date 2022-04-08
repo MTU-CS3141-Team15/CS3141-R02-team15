@@ -68,8 +68,6 @@ router.get(
       },
     });
 
-    console.log("DEEc");
-
     if (habit) {
       res.send(habit);
     } else {
