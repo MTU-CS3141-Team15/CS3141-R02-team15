@@ -8,7 +8,7 @@ import prisma from "../db";
 import asyncHandler from "../util/asyncHandler";
 import passport from "passport";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import requireAuth, { refreshAccessToken } from "../auth/middleware";
+import { refreshAccessToken } from "../auth/middleware";
 import { createHash } from "../auth/hash";
 
 const router = Router();
