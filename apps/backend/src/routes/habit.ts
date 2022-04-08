@@ -26,7 +26,6 @@ router.post(
   })
 );
 
-// Update a habit
 router.post(
   "/:id/progress",
   asyncHandler(async (req, res) => {
@@ -35,14 +34,14 @@ router.post(
     const userId = req.user.id;
 
     // Check if the user is updating a habit associated with their account only
-    const habit = await prisma.habit.findUnique({
+    const habit = await prisma.habit.findFirst({
       where: {
         id: habitId,
+        creatorId: userId,
       },
     });
 
-    if (habit?.creatorId == null || habit?.creatorId != userId) {
-      console.log(habit?.creatorId);
+    if (!habit) {
       res.status(400).send();
       return;
     }
