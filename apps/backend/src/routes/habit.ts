@@ -120,10 +120,6 @@ router.delete(
   asyncHandler(async (req, res) => {
     //First identify the id
     const habitId = parseInt(req.params.id); //This should paras the string id to int.
-
-    /* This query should deletes a specific habit and
-         it uses select to return the name and end date of the deleted habit.
-         Not sure if this is userful but I'll keep it in for now.*/
     const habit = await prisma.habit.delete({
       where: {
         id: habitId,
