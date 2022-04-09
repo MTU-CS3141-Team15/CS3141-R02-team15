@@ -1,217 +1,119 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  TextField,
-  CardActionArea,
-  CardMedia,
-} from "@mui/material";
-import * as React from "react";
+import { Stack, Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import HabitCard from "../components/HabitCard";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useHabits, { Habit } from "../util/hooks/useHabits";
+import CreateHabitDialog, { HabitForm } from "../components/CreateHabitDialog";
+import APIRequest from "../util/request";
+import DeleteHabitDialog from "../components/DeleteHabitDialog";
 
 export default function Home() {
-  const [openDelete, setOpenDelete] = React.useState(false);
-  const [openCreate, setOpenCreate] = React.useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [habitToDelete, setHabitToDelete] = useState<Habit>();
+  const [openCreate, setOpenCreate] = useState(false);
+  const [habits, addHabits, deleteHabits] = useHabits([]);
 
-  const handleClickOpenDelete = () => {
-    setOpenDelete(true);
-  };
-
-  const handleCloseDelete = () => {
+  const handleDeleteClose = useCallback(() => {
+    setHabitToDelete(undefined);
     setOpenDelete(false);
-  };
+  }, []);
 
-  const handleClickOpenCreate = () => {
+  const handleDeleteConfirm = useCallback(() => {
+    if (habitToDelete) {
+      deleteHabits(habitToDelete);
+      setHabitToDelete(undefined);
+    }
+    setOpenDelete(false);
+  }, [deleteHabits, habitToDelete]);
+
+  const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
-  };
+  }, []);
 
-  const handleCloseCreate = () => {
+  const handleCreateClose = useCallback(() => {
     setOpenCreate(false);
-  };
+  }, []);
 
-  // TODO: Don't console log information in production!!!
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      habitName: data.get("habit-name"),
-      habitDesc: data.get("habit-description"),
-    });
-  };
+  const handleCreateSubmit = useCallback(
+    (habit: HabitForm) => {
+      APIRequest.post("/habits", habit)
+        .then((res) => res.json())
+        .then((body) => addHabits(body))
+        .then(() => setOpenCreate(false));
+    },
+    [addHabits]
+  );
+
+  useEffect(() => {
+    APIRequest.get("/habits")
+      .then((res) => res.json())
+      .then((body) => addHabits(...body));
+  }, [addHabits]);
+
+  const habitCards = useMemo(
+    () =>
+      habits.map((habit) => {
+        const handleDelete = () => {
+          setHabitToDelete(habit);
+          setOpenDelete(true);
+        };
+        return (
+          <HabitCard
+            key={habit.id}
+            name={habit.name}
+            description={habit.description}
+            onUpdate={undefined}
+            onProgress={undefined}
+            onDelete={handleDelete}
+          />
+        );
+      }),
+    [habits]
+  );
 
   return (
-    <Box
-      component="main"
-      sx={{
-        marginTop: 8,
-        marginX: 8,
-        display: "flex",
-        flexDirection: "grid",
-        alignItems: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      <Card
-        sx={{ maxWidth: 275, margin: 2, maxHeight: 130 }}
-        onClick={handleClickOpenCreate}
+    <main>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 2, sm: 2, md: 4 }}
+        sx={{ margin: 5 }}
+        alignItems="center"
       >
-        <CardActionArea>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              New Habit
-            </Typography>
-          </CardContent>
-          <CardMedia
-            component="img"
-            height="65"
-            image="https://lh3.googleusercontent.com/WyK_38n4GGPtqitT0IP7dVq8n9edWFdL__DAJfaxMNEmqtdyJv9WKfAEjuArMO8lt6WOyzwRYCO-xKId8CBW6qr4O3JdczTIo4v3FOH7c-q_VZXDbGM=w1064-v0"
-            alt="create-habit"
-          />
-        </CardActionArea>
-      </Card>
-
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 1
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
-
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 2
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
-
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 3
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
-
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 4
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
-
-      <Card sx={{ minWidth: 275, margin: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Habit 5
-          </Typography>
-          <Typography variant="body2">Description of habit.</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Update</Button>
-          <Button size="small">Progress</Button>
-          <Button size="small" color="error" onClick={handleClickOpenDelete}>
-            Delete
-          </Button>
-        </CardActions>
-      </Card>
-
-      <Dialog
+        {habitCards}
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            display: { sm: "flex", xs: "none" },
+          }}
+          onClick={handleCreateOpen}
+        >
+          <AddIcon />
+        </Fab>
+      </Stack>
+      <DeleteHabitDialog
         open={openDelete}
-        onClose={handleCloseDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        onClose={handleDeleteClose}
+        onConfirm={handleDeleteConfirm}
+      />
+      <CreateHabitDialog
+        open={openCreate}
+        onClose={handleCreateClose}
+        onSubmit={handleCreateSubmit}
+      />
+      <Fab
+        color="primary"
+        aria-label="add"
+        sx={{
+          display: { sm: "none", xs: "flex" },
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+        }}
+        onClick={handleCreateOpen}
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this habit?"}
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleCloseDelete}>Keep</Button>
-          <Button color="error" onClick={handleCloseDelete} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={openCreate} onClose={handleCloseCreate}>
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <DialogTitle>Create a new habit</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Enter a name and description for the habit:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="habit-name"
-              name="habit-name"
-              label="Habit Name"
-              type="name"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              margin="dense"
-              id="habit-description"
-              name="habit-description"
-              label="Habit Description"
-              type="description"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseCreate} color="error">
-              Cancel
-            </Button>
-            <Button onClick={handleCloseCreate} type="submit">
-              Create
-            </Button>
-          </DialogActions>
-        </Box>
-      </Dialog>
-    </Box>
+        <AddIcon />
+      </Fab>
+    </main>
   );
 }
