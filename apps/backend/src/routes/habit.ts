@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { userInfo } from "os";
 import requireAuth from "../auth/middleware";
 import prisma from "../db";
 import asyncHandler from "../util/asyncHandler";
@@ -118,8 +117,7 @@ router.get(
 router.delete(
   "/:id",
   asyncHandler(async (req, res) => {
-    //First identify the id
-    const habitId = parseInt(req.params.id); //This should paras the string id to int.
+    const habitId = parseInt(req.params.id);
     const habit = await prisma.habit.delete({
       where: {
         id: habitId,
@@ -131,9 +129,9 @@ router.delete(
     });
 
     if (habit) {
-      res.send(habit); //res here should return the select
+      res.send(habit);
     } else {
-      res.status(400).send(); //res return error
+      res.status(400).send();
     }
   })
 );

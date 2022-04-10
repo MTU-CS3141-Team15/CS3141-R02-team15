@@ -2,7 +2,6 @@ import { agent, SuperAgentTest } from "supertest";
 import prismaMock from "./prisma-mock";
 import app from "../src/app";
 import { createHash } from "../src/auth/hash";
-import { prisma } from "@prisma/client";
 
 const user = {
   id: 1,
@@ -94,7 +93,6 @@ describe("/habits", () => {
     });
   });
 
-  //Test delete a habit
   describe("DELETE", () => {
     test("Delete a single habit", async () => {
       prismaMock.habit.delete.mockResolvedValue(habit);
