@@ -92,6 +92,19 @@ describe("/habits", () => {
       expect(res.status).toEqual(200);
     });
   });
+
+  describe("DELETE", () => {
+    test("Delete a single habit", async () => {
+      prismaMock.habit.delete.mockResolvedValue(habit);
+
+      const res = await request.delete("/habits/1").send({
+        name: habit.name,
+        endDate: habit.endDate,
+      });
+      expect(res.status).toBe(200);
+      expect(res.body).toStrictEqual(JSON.parse(JSON.stringify(habit)));
+    });
+  });
 });
 
 describe("/habits/update", () => {

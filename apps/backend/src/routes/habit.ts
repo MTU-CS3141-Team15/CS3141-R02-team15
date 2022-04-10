@@ -113,4 +113,27 @@ router.get(
   })
 );
 
+// Delete a habit
+router.delete(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+    const habit = await prisma.habit.delete({
+      where: {
+        id: habitId,
+      },
+      select: {
+        name: true,
+        endDate: true,
+      },
+    });
+
+    if (habit) {
+      res.send(habit);
+    } else {
+      res.status(400).send();
+    }
+  })
+);
+
 export default router;
