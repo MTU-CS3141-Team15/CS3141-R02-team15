@@ -22,6 +22,7 @@ import UserButton from "./UserButton";
 
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -84,6 +85,7 @@ export default function App() {
         >
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </Suspense>
