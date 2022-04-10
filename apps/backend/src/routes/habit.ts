@@ -138,23 +138,4 @@ router.delete(
   })
 );
 
-/**
-// Delete many habits - Notes: will need further development after we implement select features
-router.delete('/',
-      asyncHandler(async(req, res) =>{
-        const habitId = parseInt(req.params.id); //Find id
-
-        /** 
-         * Tihs functions will first have to find all the selected habits and their ids.
-         * Then it will then delete all of the habits that contain that id.
-         * For now I am thinking it might have something to do with findMany() and deleteMany().
-        
-        const habit = await prisma.habit.deleteMany({
-          where:{
-            id: habitId,
-          }
-        });
-      })
-);
-*/
 export default router;
