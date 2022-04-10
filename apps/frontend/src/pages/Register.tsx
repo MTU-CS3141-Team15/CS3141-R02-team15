@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Link as RouterLink } from "react-router-dom";
 export default function Register() {
   // TODO: Don't console log passwords in production!!!
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -97,7 +98,7 @@ export default function Register() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link component={RouterLink} to="/login" variant="body2">
                 {"Already have an account? Login"}
               </Link>
             </Grid>

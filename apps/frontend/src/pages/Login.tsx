@@ -13,6 +13,7 @@ import { useCallback, useState } from "react";
 import { useUserContext } from "../components/UserProvider";
 import APIRequest from "../util/request";
 import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 type LoginForm = {
   email: string;
@@ -111,7 +112,7 @@ export default function Login() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link component={RouterLink} to="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
