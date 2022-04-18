@@ -105,6 +105,23 @@ describe("/habits", () => {
       expect(res.body).toStrictEqual(JSON.parse(JSON.stringify(habit)));
     });
   });
+
+  describe("PUT", () => {
+    test("Edit a habit", async () => {
+      prismaMock.habit.findFirst.mockResolvedValue(habit);
+      const newChanges = {
+        name: "not Jog",
+        endDate: new Date("2022-05-31"),
+      };
+
+      const res = await request.post("/habits/1/progress").send({
+        taskMet: newChanges.name,
+        endDate: newChanges.endDate,
+      });
+
+      expect(res.status).toEqual(200);
+    });
+  });
 });
 
 describe("/habits/update", () => {
