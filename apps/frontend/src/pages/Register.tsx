@@ -12,6 +12,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useCallback, useState } from "react";
 import APIRequest from "../util/request";
+import { useUserContext } from "../components/UserProvider";
 
 type RegisterForm = {
   firstName: string;
@@ -22,6 +23,7 @@ type RegisterForm = {
 
 export default function Register() {
   const navigate = useNavigate();
+  const { setUser } = useUserContext();
   const [formData, setFormData] = useState<RegisterForm>({
     firstName: "",
     lastName: "",
@@ -34,11 +36,28 @@ export default function Register() {
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       APIRequest.post("/user/register", formData)
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`Error: ${res.status}`);
+          }
+          return APIRequest.post("/user/login", {
+            email: formData["email"],
+            password: formData["password"],
+          });
+        })
         .then((res) => res.json())
-        .then(() => navigate("/login"))
+        .then((body) => {
+          setUser({
+            id: body["id"],
+            email: body["email"],
+            firstName: body["firstName"],
+            lastName: body["lastName"],
+          });
+          navigate("/");
+        })
         .catch((err) => console.log(err));
     },
-    [formData, navigate]
+    [formData, navigate, setUser]
   );
 
   const handleInputChange = useCallback(
