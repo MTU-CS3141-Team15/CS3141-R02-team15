@@ -136,4 +136,27 @@ router.delete(
   })
 );
 
+// Edit a habit
+router.put(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+    const userId = req.user.id;
+    const { name, endDate } = req.body as { name: string; endDate: string };
+    // Check if the user is editing a habit associated with their account only
+    const habit = await prisma.habit.update({
+      where: {
+        id: habitId,
+        creatorId: userId,
+      },
+      data: {
+        name: name,
+        endDate: endDate,
+      },
+    });
+
+    res.send(habit);
+  })
+);
+
 export default router;
