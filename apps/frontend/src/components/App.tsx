@@ -11,6 +11,9 @@ import {
   Toolbar,
   Typography,
   Link,
+  Menu,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
 import { Route, Routes, Link as RouterLink } from "react-router-dom";
 import { lightTheme } from "../themes/light";
@@ -19,10 +22,12 @@ import { lazy, Suspense, useCallback, useState } from "react";
 import ListItemNavLink from "./ListItemNavLink";
 import UserProvider from "./UserProvider";
 import UserButton from "./UserButton";
+import * as React from "react";
 
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
+const Account = lazy(() => import("../pages/Account"));
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -31,6 +36,20 @@ export default function App() {
     () => setDrawerOpen(!drawerOpen),
     [drawerOpen]
   );
+
+  //Modified codes VV
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = (s: string) => {
+    setAnchorElUser(null);
+  };
+  const settings = ["Account", "Logout"];
+
+  //Modifed Codes ^^
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -58,8 +77,41 @@ export default function App() {
                 Habit Helper
               </Link>
             </Typography>
-            <UserButton />
+            {/* Modified vv */}
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <UserButton />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleCloseUserMenu(setting)}
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Toolbar>
+          {/* Modified ^ */}
         </AppBar>
         <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
           <Box
@@ -70,6 +122,7 @@ export default function App() {
           >
             <List>
               <ListItemNavLink to="/" primary="Home" />
+              <ListItemNavLink to="/account" primary="Account" />
             </List>
           </Box>
         </Drawer>
@@ -87,6 +140,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
+            <Route path="/account" element={<Account />} />
           </Routes>
         </Suspense>
       </UserProvider>
