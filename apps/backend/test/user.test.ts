@@ -73,4 +73,19 @@ describe("/user", () => {
       expect(res.body).toStrictEqual(userInfo);
     });
   });
+
+  describe("DELETE", () => {
+    test("Delete a requested user", async () => {
+      prismaMock.user.delete.mockResolvedValue(user);
+
+      const res = await request.delete("/user/1").send({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        lastLogin: user.lastLogin,
+      });
+      expect(res.status).toBe(200);
+      expect(res.body).toStrictEqual(JSON.parse(JSON.stringify(user)));
+    });
+  });
 });
