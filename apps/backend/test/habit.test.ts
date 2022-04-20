@@ -108,14 +108,25 @@ describe("/habits", () => {
 
   describe("PUT", () => {
     test("Edit a habit", async () => {
-      prismaMock.habit.findFirst.mockResolvedValue(habit);
       const newChanges = {
         name: "not Jog",
         endDate: new Date("2022-05-31"),
       };
 
-      const res = await request.post("/habits/1/progress").send({
-        taskMet: newChanges.name,
+      prismaMock.habit.findFirst.mockResolvedValue(habit);
+      prismaMock.habit.update({
+        where: {
+          id: habit.id,
+          // description: description,
+        },
+        data: {
+          name: newChanges.name,
+          endDate: newChanges.endDate,
+        },
+      });
+
+      const res = await request.put("/habits/1").send({
+        name: newChanges.name,
         endDate: newChanges.endDate,
       });
 
