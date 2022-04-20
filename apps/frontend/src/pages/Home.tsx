@@ -9,6 +9,7 @@ import DeleteHabitDialog from "../components/DeleteHabitDialog";
 import { useUserContext } from "../components/UserProvider";
 import { useNavigate } from "react-router-dom";
 import HabitProgressDialog from "../components/HabitProgressDialog";
+import ProgressHabitDialog from "../components/ProgressHabitDialog";
 
 export default function Home() {
   // Simple fix to redirect unauthenticated users to the welcome landing page
@@ -20,6 +21,8 @@ export default function Home() {
   const [selectedHabit, setSelectedHabit] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);
   const [habits, addHabits, deleteHabits] = useHabits([]);
+  //Progress consts VVV
+  const [habitToProgress, setHabitToProgress] = useState<Habit>();
   const [openProgress, setOpenProgress] = useState(false);
 
   const handleDeleteClose = useCallback(() => {
@@ -35,6 +38,13 @@ export default function Home() {
     setOpenDelete(false);
   }, [deleteHabits, selectedHabit]);
 
+  const handleProgressConfirm = useCallback(() => {
+    if (habitToProgress) {
+      setHabitToProgress(undefined);
+      setOpenProgress(false);
+    }
+  }, []);
+  //Progress ^^
   const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
   }, []);
@@ -109,6 +119,11 @@ export default function Home() {
           <AddIcon />
         </Fab>
       </Stack>
+      <ProgressHabitDialog
+        open={openProgress}
+        onClose={handleProgressClose}
+        onConfirm={handleProgressConfirm}
+      />
       <DeleteHabitDialog
         open={openDelete}
         onClose={handleDeleteClose}
