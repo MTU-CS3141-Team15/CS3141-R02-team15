@@ -7,6 +7,7 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
+import CircularProgress from "./CircularProgress";
 
 interface HabitCardProps {
   name: string;
@@ -43,6 +44,7 @@ export default function HabitCard({
         <Button size="small" color="error" onClick={onDelete}>
           Delete
         </Button>
+        <CircularProgress />
       </CardActions>
     </Card>
   );
