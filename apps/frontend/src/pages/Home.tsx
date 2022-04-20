@@ -8,6 +8,7 @@ import APIRequest from "../util/request";
 import DeleteHabitDialog from "../components/DeleteHabitDialog";
 import { useUserContext } from "../components/UserProvider";
 import { useNavigate } from "react-router-dom";
+import HabitProgressDialog from "../components/HabitProgressDialog";
 
 export default function Home() {
   // Simple fix to redirect unauthenticated users to the welcome landing page
@@ -19,6 +20,7 @@ export default function Home() {
   const [habitToDelete, setHabitToDelete] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);
   const [habits, addHabits, deleteHabits] = useHabits([]);
+  const [openProgress, setOpenProgress] = useState(false);
 
   const handleDeleteClose = useCallback(() => {
     setHabitToDelete(undefined);
@@ -39,6 +41,10 @@ export default function Home() {
 
   const handleCreateClose = useCallback(() => {
     setOpenCreate(false);
+  }, []);
+
+  const handleProgressClose = useCallback(() => {
+    setOpenProgress(false);
   }, []);
 
   const handleCreateSubmit = useCallback(
@@ -64,13 +70,16 @@ export default function Home() {
           setHabitToDelete(habit);
           setOpenDelete(true);
         };
+        const handleProgress = () => {
+          setOpenProgress(true);
+        };
         return (
           <HabitCard
             key={habit.id}
             name={habit.name}
             description={habit.description}
             onUpdate={undefined}
-            onProgress={undefined}
+            onProgress={handleProgress}
             onDelete={handleDelete}
           />
         );
@@ -108,6 +117,7 @@ export default function Home() {
         onClose={handleCreateClose}
         onSubmit={handleCreateSubmit}
       />
+      <HabitProgressDialog open={openProgress} onClose={handleProgressClose} />
       <Fab
         color="primary"
         aria-label="add"
