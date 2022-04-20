@@ -18,7 +18,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { lazy, Suspense, useCallback, useMemo, useState } from "react";
 import ListItemNavLink from "./ListItemNavLink";
 import UserProvider from "./UserProvider";
-import { useUserContext } from "./UserProvider";
 import UserButton from "./UserButton";
 import FlashlightOffIcon from "@mui/icons-material/FlashlightOff";
 import FlashlightOnIcon from "@mui/icons-material/FlashlightOn";
@@ -45,26 +44,6 @@ export default function App() {
     () => setDrawerOpen(!drawerOpen),
     [drawerOpen]
   );
-
-  function SelectHomepage() {
-    const { user } = useUserContext();
-    console.log(user);
-    if (user) {
-      return (
-        <>
-          <Route path="/" element={<Home />} />
-          <Route path="/welcome" element={<Landing />} />
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-        </>
-      );
-    }
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -130,7 +109,8 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            {SelectHomepage()}
+            <Route path="/" element={<Home />} />
+            <Route path="/welcome" element={<Landing />} />
           </Routes>
         </Suspense>
       </UserProvider>
