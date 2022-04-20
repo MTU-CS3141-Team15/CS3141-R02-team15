@@ -29,7 +29,7 @@ export default function Home() {
             />
           </Grid>
           <Grid item xs={4}>
-            // TODO: Replace this image in production. It is not ours.
+            {/* TODO: Replace this image in production. It is not ours*/}
             <Box
               component="img"
               sx={{
