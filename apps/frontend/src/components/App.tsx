@@ -23,6 +23,7 @@ import FlashlightOffIcon from "@mui/icons-material/FlashlightOff";
 import FlashlightOnIcon from "@mui/icons-material/FlashlightOn";
 import { darkTheme } from "../themes/dark";
 
+const Landing = lazy(() => import("../pages/Landing"));
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
@@ -109,6 +110,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
+            <Route path="/welcome" element={<Landing />} />
           </Routes>
         </Suspense>
       </UserProvider>
