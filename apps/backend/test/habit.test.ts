@@ -133,6 +133,23 @@ describe("/habits", () => {
       expect(res.status).toEqual(200);
     });
   });
+
+  describe("/habits/:id/statistics", () => {
+    test("GET", async () => {
+      prismaMock.habit.findFirst.mockResolvedValue(habit);
+      prismaMock.checkIn.findMany.mockResolvedValue([checkIn]);
+
+      const res = await request.get("/habits/1/statistics");
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toStrictEqual({
+        startDate: habit.dateCreated.toISOString(),
+        endDate: habit.endDate.toISOString(),
+        entries: 1,
+        timesMet: 1,
+      });
+    });
+  });
 });
 
 describe("/habits/update", () => {
