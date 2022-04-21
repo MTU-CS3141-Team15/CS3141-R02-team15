@@ -68,7 +68,7 @@ export default function Account() {
           <Typography>Password</Typography>
           <Item>*********</Item>
           <Typography>Email</Typography>
-          <Item>JohnDoe@example.com</Item>
+          <Item>bar@example.com</Item>
         </Stack>
         <Button variant="text">
           <EditIcon /> Edit User Info
