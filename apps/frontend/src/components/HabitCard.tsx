@@ -44,7 +44,6 @@ export default function HabitCard({
         <Button size="small" color="error" onClick={onDelete}>
           Delete
         </Button>
-        <CircularProgress />
       </CardActions>
     </Card>
   );

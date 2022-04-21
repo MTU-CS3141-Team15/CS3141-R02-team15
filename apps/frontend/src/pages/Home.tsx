@@ -17,23 +17,23 @@ export default function Home() {
   if (!user) navigate("/welcome");
 
   const [openDelete, setOpenDelete] = useState(false);
-  const [habitToDelete, setHabitToDelete] = useState<Habit>();
+  const [selectedHabit, setSelectedHabit] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);
   const [habits, addHabits, deleteHabits] = useHabits([]);
   const [openProgress, setOpenProgress] = useState(false);
 
   const handleDeleteClose = useCallback(() => {
-    setHabitToDelete(undefined);
+    setSelectedHabit(undefined);
     setOpenDelete(false);
   }, []);
 
   const handleDeleteConfirm = useCallback(() => {
-    if (habitToDelete) {
-      deleteHabits(habitToDelete);
-      setHabitToDelete(undefined);
+    if (selectedHabit) {
+      deleteHabits(selectedHabit);
+      setSelectedHabit(undefined);
     }
     setOpenDelete(false);
-  }, [deleteHabits, habitToDelete]);
+  }, [deleteHabits, selectedHabit]);
 
   const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
@@ -45,6 +45,7 @@ export default function Home() {
 
   const handleProgressClose = useCallback(() => {
     setOpenProgress(false);
+    setSelectedHabit(undefined);
   }, []);
 
   const handleCreateSubmit = useCallback(
@@ -67,10 +68,11 @@ export default function Home() {
     () =>
       habits.map((habit) => {
         const handleDelete = () => {
-          setHabitToDelete(habit);
+          setSelectedHabit(habit);
           setOpenDelete(true);
         };
         const handleProgress = () => {
+          setSelectedHabit(habit);
           setOpenProgress(true);
         };
         return (
@@ -117,7 +119,11 @@ export default function Home() {
         onClose={handleCreateClose}
         onSubmit={handleCreateSubmit}
       />
-      <HabitProgressDialog open={openProgress} onClose={handleProgressClose} />
+      <HabitProgressDialog
+        habit={selectedHabit}
+        open={openProgress}
+        onClose={handleProgressClose}
+      />
       <Fab
         color="primary"
         aria-label="add"
