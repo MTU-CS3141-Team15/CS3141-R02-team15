@@ -6,8 +6,8 @@ import {
   DialogProps,
   DialogTitle,
   Box,
+  CircularProgress,
 } from "@mui/material";
-import CircularProgress from "./CircularProgress";
 
 interface HabitProgressDialogProps {
   open: DialogProps["open"];
@@ -32,14 +32,23 @@ export default function HabitProgressDialog({
           sx={{
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
-            justifyContent: "center",
-            justifyText: "center",
+            justifyContent: "center center",
+            justifyText: "center center",
           }}
         >
-          <p>1</p>
-          <CircularProgress />
-          <p>3</p>
-          <CircularProgress />
+          {/* Row 1 */}
+          <p>Times Habit Met</p>
+          <CircularProgress value={30} variant={"determinate"} />
+          {/* Row 2 */}
+          <p>Times Habit Missed</p>
+          <CircularProgress
+            color={"error"}
+            value={60}
+            variant={"determinate"}
+          />
+          {/* Row 3 */}
+          <p>Days Left</p>
+          <CircularProgress value={90} variant={"determinate"} />
         </Box>
       </DialogContent>
       <DialogActions>

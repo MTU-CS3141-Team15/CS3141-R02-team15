@@ -6,8 +6,8 @@ import {
   SxProps,
   Theme,
   Typography,
+  CircularProgress,
 } from "@mui/material";
-import CircularProgress from "./CircularProgress";
 
 interface HabitCardProps {
   name: string;
