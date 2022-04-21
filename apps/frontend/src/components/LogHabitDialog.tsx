@@ -10,17 +10,17 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 
-interface ProgressHabitDialogProps {
+interface LogHabitDialogProps {
   open: DialogProps["open"];
   onClose?: () => void;
   onConfirm?: () => void;
 }
 
-export default function ProgressHabitDialog({
+export default function LogHabitDialog({
   open,
   onClose,
   onConfirm,
-}: ProgressHabitDialogProps) {
+}: LogHabitDialogProps) {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const timer = React.useRef<number>();

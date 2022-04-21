@@ -6,10 +6,14 @@ import useHabits, { Habit } from "../util/hooks/useHabits";
 import CreateHabitDialog, { HabitForm } from "../components/CreateHabitDialog";
 import APIRequest from "../util/request";
 import DeleteHabitDialog from "../components/DeleteHabitDialog";
+<<<<<<< HEAD
 import { useUserContext } from "../components/UserProvider";
 import { useNavigate } from "react-router-dom";
 import HabitProgressDialog from "../components/HabitProgressDialog";
 import ProgressHabitDialog from "../components/ProgressHabitDialog";
+=======
+import LogHabitDialog from "../components/LogHabitDialog";
+>>>>>>> 5027642 (Refactored the progresshabit to loghabit.)
 
 export default function Home() {
   // Simple fix to redirect unauthenticated users to the welcome landing page
@@ -21,9 +25,8 @@ export default function Home() {
   const [selectedHabit, setSelectedHabit] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);
   const [habits, addHabits, deleteHabits] = useHabits([]);
-  //Progress consts VVV
-  const [habitToProgress, setHabitToProgress] = useState<Habit>();
-  const [openProgress, setOpenProgress] = useState(false);
+  const [habitToLog, setHabitToLog] = useState<Habit>();
+  const [openLog, setOpenLog] = useState(false);
 
   const handleDeleteClose = useCallback(() => {
     setSelectedHabit(undefined);
@@ -36,15 +39,24 @@ export default function Home() {
       setSelectedHabit(undefined);
     }
     setOpenDelete(false);
+<<<<<<< HEAD
   }, [deleteHabits, selectedHabit]);
+=======
+  }, [deleteHabits, habitToDelete]);
 
-  const handleProgressConfirm = useCallback(() => {
-    if (habitToProgress) {
-      setHabitToProgress(undefined);
-      setOpenProgress(false);
-    }
+  const handleLogClose = useCallback(() => {
+    setHabitToLog(undefined);
+    setOpenLog(false);
   }, []);
-  //Progress ^^
+>>>>>>> 5027642 (Refactored the progresshabit to loghabit.)
+
+  const handleLogConfirm = useCallback(() => {
+    if (habitToLog) {
+      setHabitToLog(undefined);
+      setOpenLog(false);
+    }
+  }, [null]);
+
   const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
   }, []);
@@ -81,17 +93,23 @@ export default function Home() {
           setSelectedHabit(habit);
           setOpenDelete(true);
         };
+<<<<<<< HEAD
         const handleProgress = () => {
           setSelectedHabit(habit);
           setOpenProgress(true);
+=======
+        const handleLog = () => {
+          setHabitToLog(habit);
+          setOpenLog(true);
+>>>>>>> 5027642 (Refactored the progresshabit to loghabit.)
         };
         return (
           <HabitCard
             key={habit.id}
             name={habit.name}
             description={habit.description}
-            onUpdate={undefined}
-            onProgress={handleProgress}
+            onUpdate={handleLog}
+            onProgress={undefined}
             onDelete={handleDelete}
           />
         );
@@ -119,10 +137,10 @@ export default function Home() {
           <AddIcon />
         </Fab>
       </Stack>
-      <ProgressHabitDialog
-        open={openProgress}
-        onClose={handleProgressClose}
-        onConfirm={handleProgressConfirm}
+      <LogHabitDialog
+        open={openLog}
+        onClose={handleLogClose}
+        onConfirm={handleLogConfirm}
       />
       <DeleteHabitDialog
         open={openDelete}
