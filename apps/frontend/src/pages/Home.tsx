@@ -6,8 +6,15 @@ import useHabits, { Habit } from "../util/hooks/useHabits";
 import CreateHabitDialog, { HabitForm } from "../components/CreateHabitDialog";
 import APIRequest from "../util/request";
 import DeleteHabitDialog from "../components/DeleteHabitDialog";
+import { useUserContext } from "../components/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  // Simple fix to redirect unauthenticated users to the welcome landing page
+  const navigate = useNavigate();
+  const { user } = useUserContext();
+  if (!user) navigate("/welcome");
+
   const [openDelete, setOpenDelete] = useState(false);
   const [habitToDelete, setHabitToDelete] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);

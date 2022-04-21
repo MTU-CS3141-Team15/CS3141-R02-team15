@@ -105,6 +105,51 @@ describe("/habits", () => {
       expect(res.body).toStrictEqual(JSON.parse(JSON.stringify(habit)));
     });
   });
+
+  describe("PUT", () => {
+    test("Edit a habit", async () => {
+      const newChanges = {
+        name: "not Jog",
+        endDate: new Date("2022-05-31"),
+      };
+
+      prismaMock.habit.findFirst.mockResolvedValue(habit);
+      prismaMock.habit.update({
+        where: {
+          id: habit.id,
+          // description: description,
+        },
+        data: {
+          name: newChanges.name,
+          endDate: newChanges.endDate,
+        },
+      });
+
+      const res = await request.put("/habits/1").send({
+        name: newChanges.name,
+        endDate: newChanges.endDate,
+      });
+
+      expect(res.status).toEqual(200);
+    });
+  });
+
+  describe("/habits/:id/statistics", () => {
+    test("GET", async () => {
+      prismaMock.habit.findFirst.mockResolvedValue(habit);
+      prismaMock.checkIn.findMany.mockResolvedValue([checkIn]);
+
+      const res = await request.get("/habits/1/statistics");
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toStrictEqual({
+        startDate: habit.dateCreated.toISOString(),
+        endDate: habit.endDate.toISOString(),
+        entries: 1,
+        timesMet: 1,
+      });
+    });
+  });
 });
 
 describe("/habits/update", () => {

@@ -136,4 +136,81 @@ router.delete(
   })
 );
 
+// Edit a habit
+router.put(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+    const { name, description, endDate } = req.body as {
+      name: string;
+      description: string;
+      endDate: string;
+    };
+    const userId = req.user.id;
+
+    // Check if the user is updating a habit associated with their account only
+    const habitCheck = await prisma.habit.findFirst({
+      where: {
+        id: habitId,
+        creatorId: userId,
+      },
+    });
+
+    if (!habitCheck) {
+      res.status(400).send();
+      return;
+    }
+
+    // Check if the user is editing a habit associated with their account only
+    const habit = await prisma.habit.update({
+      where: {
+        id: habitId,
+        // description: description,
+      },
+      data: {
+        name: name,
+        endDate: endDate,
+      },
+    });
+
+    res.send(habit);
+  })
+);
+
+router.get(
+  "/:id/statistics",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    const habit = await prisma.habit.findFirst({
+      where: {
+        id: habitId,
+        creatorId: userId,
+      },
+    });
+
+    if (habit === null) {
+      res.status(400);
+      return;
+    }
+
+    const checkIns = await prisma.checkIn.findMany({
+      where: {
+        habitId: habitId,
+      },
+    });
+
+    res.send({
+      startDate: habit.dateCreated,
+      endDate: habit.endDate,
+      entries: checkIns.length,
+      timesMet: checkIns.reduce(
+        (prev, curr) => (curr.taskMet ? prev + 1 : prev),
+        0
+      ),
+    });
+  })
+);
+
 export default router;
