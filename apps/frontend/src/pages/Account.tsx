@@ -62,16 +62,28 @@ export default function Account() {
         }}
       >
         <Stack spacing={2} flexDirection="column">
-          <Typography>Username</Typography>
-          <Item>John Doe</Item>
-          <Typography>Password</Typography>
-          <Item>*********</Item>
-          <Typography>Email</Typography>
-          <Item>bar@example.com</Item>
+          <Stack direction="row" spacing={2}>
+            <Typography>First Name</Typography>
+            <Item>John</Item>
+          </Stack>
+          <Stack direction="row" spacing={2}>
+            <Typography>Last Name</Typography>
+            <Item>Doe</Item>
+          </Stack>
+          <Stack direction="row" spacing={2}>
+            <Typography>Password</Typography>
+            <Item>*********</Item>
+          </Stack>
+          <Stack direction="row" spacing={2}>
+            <Typography>Email</Typography>
+            <Item>bar@example.com</Item>
+          </Stack>
         </Stack>
-        <Button variant="text">
-          <EditIcon /> Edit User Info
-        </Button>
+        <Box marginTop={3}>
+          <Button variant="text">
+            <EditIcon /> Edit User Info
+          </Button>
+        </Box>
       </Box>
       <Box
         sx={{

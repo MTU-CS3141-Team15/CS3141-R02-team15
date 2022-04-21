@@ -49,7 +49,14 @@ export default function UserButton() {
 
   const element = useMemo(() => {
     if (user) {
-      return <Avatar {...stringAvatar(user)} />;
+      return (
+        <Avatar
+          {...stringAvatar(user)}
+          component={RouterLink}
+          to="/account"
+          style={{ textDecoration: "none" }}
+        />
+      );
     } else {
       return (
         <Button color="inherit" component={RouterLink} to="/login">
