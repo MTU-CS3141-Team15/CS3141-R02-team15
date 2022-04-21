@@ -6,7 +6,6 @@ import {
   SxProps,
   Theme,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 
 interface HabitCardProps {
