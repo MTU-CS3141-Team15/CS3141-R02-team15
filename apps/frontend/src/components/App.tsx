@@ -27,6 +27,7 @@ const Landing = lazy(() => import("../pages/Landing"));
 const Home = lazy(() => import("../pages/Home"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
+const Account = lazy(() => import("../pages/Account"));
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -44,7 +45,6 @@ export default function App() {
     () => setDrawerOpen(!drawerOpen),
     [drawerOpen]
   );
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -93,6 +93,7 @@ export default function App() {
           >
             <List>
               <ListItemNavLink to="/" primary="Home" />
+              <ListItemNavLink to="/account" primary="Account" />
             </List>
           </Box>
         </Drawer>
@@ -110,6 +111,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
+            <Route path="/account" element={<Account />} />
             <Route path="/welcome" element={<Landing />} />
           </Routes>
         </Suspense>
