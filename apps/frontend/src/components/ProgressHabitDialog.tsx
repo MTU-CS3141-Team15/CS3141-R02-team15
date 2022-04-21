@@ -4,40 +4,16 @@ import {
   DialogActions,
   DialogProps,
   DialogTitle,
-  Typography,
 } from "@mui/material";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
-import Fab from "@mui/material/Fab";
-import CheckIcon from "@mui/icons-material/Check";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import LinearProgress, {
-  LinearProgressProps,
-} from "@mui/material/LinearProgress";
 
 interface ProgressHabitDialogProps {
   open: DialogProps["open"];
   onClose?: () => void;
   onConfirm?: () => void;
-}
-
-function LinearProgressWithLabel(
-  props: LinearProgressProps & { value: number }
-) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ width: "100%", mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
-          props.value
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
 }
 
 export default function ProgressHabitDialog({
@@ -92,34 +68,9 @@ export default function ProgressHabitDialog({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Did you follow your habit?"}
+        {"Did you follow this habit for today?"}
       </DialogTitle>
-      <Box sx={{ width: "90%", p: 1, m: 1 }}>
-        <LinearProgressWithLabel value={progress} />
-      </Box>
       <Box sx={{ display: "flex", alignItems: "center", p: 1, m: 1 }}>
-        <Box sx={{ m: 1, position: "relative" }}>
-          <Fab
-            aria-label="save"
-            color="primary"
-            sx={buttonSx}
-            onClick={handleButtonClick}
-          >
-            {success ? <CheckIcon /> : <RadioButtonUncheckedIcon />}
-          </Fab>
-          {loading && (
-            <CircularProgress
-              size={68}
-              sx={{
-                color: green[500],
-                position: "absolute",
-                top: -6,
-                left: -6,
-                zIndex: 1,
-              }}
-            />
-          )}
-        </Box>
         <Box sx={{ m: 1, position: "relative" }}>
           <Button
             variant="contained"
@@ -143,10 +94,10 @@ export default function ProgressHabitDialog({
             />
           )}
         </Box>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+        </DialogActions>
       </Box>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-      </DialogActions>
     </Dialog>
   );
 }
