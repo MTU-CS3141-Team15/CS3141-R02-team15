@@ -58,4 +58,26 @@ router.put(
   })
 );
 
+router.delete(
+  "/",
+  asyncHandler(async (req, res) => {
+    const user = await prisma.user.delete({
+      where: {
+        id: req.user.id,
+      },
+      select: {
+        firstName: true,
+        lastName: true,
+        email: true,
+        lastLogin: true,
+      },
+    });
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(400).send();
+    }
+  })
+);
+
 export default router;
