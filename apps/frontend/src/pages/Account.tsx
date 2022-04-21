@@ -10,7 +10,6 @@ import {
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteAccountDialog from "../components/DeleteAccountDialog";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";

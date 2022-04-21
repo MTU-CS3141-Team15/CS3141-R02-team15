@@ -25,7 +25,7 @@ export default function DeleteAccountDialog({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Are you sure you want to delete this habit?"}
+        {"Are you sure you want to delete this account?"}
       </DialogTitle>
       <DialogActions>
         <Button onClick={onClose}>Keep</Button>
