@@ -177,4 +177,40 @@ router.put(
   })
 );
 
+router.get(
+  "/:id/statistics",
+  asyncHandler(async (req, res) => {
+    const habitId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    const habit = await prisma.habit.findFirst({
+      where: {
+        id: habitId,
+        creatorId: userId,
+      },
+    });
+
+    if (habit === null) {
+      res.status(400);
+      return;
+    }
+
+    const checkIns = await prisma.checkIn.findMany({
+      where: {
+        habitId: habitId,
+      },
+    });
+
+    res.send({
+      startDate: habit.dateCreated,
+      endDate: habit.endDate,
+      entries: checkIns.length,
+      timesMet: checkIns.reduce(
+        (prev, curr) => (curr.taskMet ? prev + 1 : prev),
+        0
+      ),
+    });
+  })
+);
+
 export default router;
