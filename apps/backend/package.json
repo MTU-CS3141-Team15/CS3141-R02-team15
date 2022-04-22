@@ -22,7 +22,8 @@
         "jsonwebtoken": "^8.5.1",
         "passport": "^0.5.2",
         "passport-jwt": "^4.0.0",
-        "passport-local": "^1.0.0"
+        "passport-local": "^1.0.0",
+        "react-confetti": "^6.0.1"
     },
     "devDependencies": {
         "@types/compression": "^1.7.2",

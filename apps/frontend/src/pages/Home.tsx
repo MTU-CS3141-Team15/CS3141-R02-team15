@@ -9,6 +9,7 @@ import DeleteHabitDialog from "../components/DeleteHabitDialog";
 import { useUserContext } from "../components/UserProvider";
 import { useNavigate } from "react-router-dom";
 import HabitProgressDialog from "../components/HabitProgressDialog";
+import LogHabitDialog from "../components/LogHabitDialog";
 
 export default function Home() {
   // Simple fix to redirect unauthenticated users to the welcome landing page
@@ -20,6 +21,8 @@ export default function Home() {
   const [selectedHabit, setSelectedHabit] = useState<Habit>();
   const [openCreate, setOpenCreate] = useState(false);
   const [habits, addHabits, deleteHabits] = useHabits([]);
+  const [habitToLog, setHabitToLog] = useState<Habit>();
+  const [openLog, setOpenLog] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
 
   const handleDeleteClose = useCallback(() => {
@@ -34,6 +37,18 @@ export default function Home() {
     }
     setOpenDelete(false);
   }, [deleteHabits, selectedHabit]);
+
+  const handleLogClose = useCallback(() => {
+    setHabitToLog(undefined);
+    setOpenLog(false);
+  }, []);
+
+  const handleLogConfirm = useCallback(() => {
+    if (habitToLog) {
+      setHabitToLog(undefined);
+      setOpenLog(false);
+    }
+  }, [habitToLog]);
 
   const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
@@ -75,12 +90,16 @@ export default function Home() {
           setSelectedHabit(habit);
           setOpenProgress(true);
         };
+        const handleLog = () => {
+          setHabitToLog(habit);
+          setOpenLog(true);
+        };
         return (
           <HabitCard
             key={habit.id}
             name={habit.name}
             description={habit.description}
-            onUpdate={undefined}
+            onUpdate={handleLog}
             onProgress={handleProgress}
             onDelete={handleDelete}
           />
@@ -109,6 +128,11 @@ export default function Home() {
           <AddIcon />
         </Fab>
       </Stack>
+      <LogHabitDialog
+        open={openLog}
+        onClose={handleLogClose}
+        onConfirm={handleLogConfirm}
+      />
       <DeleteHabitDialog
         open={openDelete}
         onClose={handleDeleteClose}
