@@ -6,14 +6,10 @@ import useHabits, { Habit } from "../util/hooks/useHabits";
 import CreateHabitDialog, { HabitForm } from "../components/CreateHabitDialog";
 import APIRequest from "../util/request";
 import DeleteHabitDialog from "../components/DeleteHabitDialog";
-<<<<<<< HEAD
 import { useUserContext } from "../components/UserProvider";
 import { useNavigate } from "react-router-dom";
 import HabitProgressDialog from "../components/HabitProgressDialog";
-import ProgressHabitDialog from "../components/ProgressHabitDialog";
-=======
 import LogHabitDialog from "../components/LogHabitDialog";
->>>>>>> 5027642 (Refactored the progresshabit to loghabit.)
 
 export default function Home() {
   // Simple fix to redirect unauthenticated users to the welcome landing page
@@ -27,6 +23,7 @@ export default function Home() {
   const [habits, addHabits, deleteHabits] = useHabits([]);
   const [habitToLog, setHabitToLog] = useState<Habit>();
   const [openLog, setOpenLog] = useState(false);
+  const [openProgress, setOpenProgress] = useState(false);
 
   const handleDeleteClose = useCallback(() => {
     setSelectedHabit(undefined);
@@ -39,16 +36,12 @@ export default function Home() {
       setSelectedHabit(undefined);
     }
     setOpenDelete(false);
-<<<<<<< HEAD
   }, [deleteHabits, selectedHabit]);
-=======
-  }, [deleteHabits, habitToDelete]);
 
   const handleLogClose = useCallback(() => {
     setHabitToLog(undefined);
     setOpenLog(false);
   }, []);
->>>>>>> 5027642 (Refactored the progresshabit to loghabit.)
 
   const handleLogConfirm = useCallback(() => {
     if (habitToLog) {
@@ -93,15 +86,13 @@ export default function Home() {
           setSelectedHabit(habit);
           setOpenDelete(true);
         };
-<<<<<<< HEAD
         const handleProgress = () => {
           setSelectedHabit(habit);
           setOpenProgress(true);
-=======
+        };
         const handleLog = () => {
           setHabitToLog(habit);
           setOpenLog(true);
->>>>>>> 5027642 (Refactored the progresshabit to loghabit.)
         };
         return (
           <HabitCard
@@ -109,7 +100,7 @@ export default function Home() {
             name={habit.name}
             description={habit.description}
             onUpdate={handleLog}
-            onProgress={undefined}
+            onProgress={handleProgress}
             onDelete={handleDelete}
           />
         );
