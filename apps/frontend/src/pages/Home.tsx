@@ -55,7 +55,7 @@ export default function Home() {
       setHabitToLog(undefined);
       setOpenLog(false);
     }
-  }, [null]);
+  }, [habitToLog]);
 
   const handleCreateOpen = useCallback(() => {
     setOpenCreate(true);
